@@ -1,4 +1,4 @@
-package com.taotao.pojo;
+package com.taotao.result;
 
 import java.util.List;
 

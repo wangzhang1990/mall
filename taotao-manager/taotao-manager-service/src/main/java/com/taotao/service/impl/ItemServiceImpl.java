@@ -1,5 +1,6 @@
 package com.taotao.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,22 +8,27 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.taotao.mapper.TbItemDescMapper;
 import com.taotao.mapper.TbItemMapper;
-import com.taotao.pojo.EUDataGridResult;
 import com.taotao.pojo.TbItem;
+import com.taotao.pojo.TbItemDesc;
 import com.taotao.pojo.TbItemExample;
 import com.taotao.pojo.TbItemExample.Criteria;
+import com.taotao.result.EUDataGridResult;
+import com.taotao.result.TaotaoResult;
 import com.taotao.service.ItemService;
+import com.taotao.utils.IDUtils;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 	
 	@Autowired
 	private TbItemMapper itemMapper;
+	@Autowired
+	private TbItemDescMapper itemDescMapper;
 	
 	@Override
 	public TbItem getItemById(long itemId) {
-		// TODO Auto-generated method stub
 		TbItemExample example = new TbItemExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andIdEqualTo(itemId);
@@ -46,6 +52,33 @@ public class ItemServiceImpl implements ItemService {
 		result.setRows(list);
 		result.setTotal(pageInfo.getTotal());
 		return result;
+	}
+
+	@Override
+	public TaotaoResult addItem(TbItem item, TbItemDesc itemDesc) {
+		// TODO Auto-generated method stub
+		System.out.println("---");
+		try {
+			long itemId = IDUtils.genItemId();
+			item.setId(itemId);
+			item.setStatus((byte) 1);
+			Date date = new Date();
+			item.setCreated(date);
+			item.setUpdated(date);
+			
+			itemDesc.setItemId(itemId);
+			itemDesc.setCreated(date);
+			itemDesc.setUpdated(date);
+			
+			itemMapper.insert(item);
+			itemDescMapper.insert(itemDesc);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return TaotaoResult.build(500, e.getMessage());
+		}
+		
+		return TaotaoResult.ok();
 	}
 
 }
