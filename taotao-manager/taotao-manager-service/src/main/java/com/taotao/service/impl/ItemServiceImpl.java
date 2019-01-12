@@ -10,10 +10,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.taotao.mapper.TbItemDescMapper;
 import com.taotao.mapper.TbItemMapper;
+import com.taotao.mapper.TbItemParamItemMapper;
 import com.taotao.pojo.TbItem;
 import com.taotao.pojo.TbItemDesc;
 import com.taotao.pojo.TbItemExample;
 import com.taotao.pojo.TbItemExample.Criteria;
+import com.taotao.pojo.TbItemParamItem;
 import com.taotao.result.EUDataGridResult;
 import com.taotao.result.TaotaoResult;
 import com.taotao.service.ItemService;
@@ -26,6 +28,8 @@ public class ItemServiceImpl implements ItemService {
 	private TbItemMapper itemMapper;
 	@Autowired
 	private TbItemDescMapper itemDescMapper;
+	@Autowired
+	private TbItemParamItemMapper itemParamItemMapper;
 	
 	@Override
 	public TbItem getItemById(long itemId) {
@@ -55,7 +59,7 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public TaotaoResult addItem(TbItem item, TbItemDesc itemDesc) {
+	public TaotaoResult addItem(TbItem item, TbItemDesc itemDesc, TbItemParamItem itemParamItem) {
 		// TODO Auto-generated method stub
 		System.out.println("---");
 		try {
@@ -70,8 +74,13 @@ public class ItemServiceImpl implements ItemService {
 			itemDesc.setCreated(date);
 			itemDesc.setUpdated(date);
 			
+			itemParamItem.setItemId(itemId);
+			itemParamItem.setCreated(date);
+			itemParamItem.setUpdated(date);
+			
 			itemMapper.insert(item);
 			itemDescMapper.insert(itemDesc);
+			itemParamItemMapper.insert(itemParamItem);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

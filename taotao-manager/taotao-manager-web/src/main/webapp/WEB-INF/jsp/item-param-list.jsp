@@ -41,6 +41,7 @@
         text:'新增',
         iconCls:'icon-add',
         handler:function(){
+        //打开一个window窗口
         	TAOTAO.createWindow({
         		url : "/item-param-add",
         	});
