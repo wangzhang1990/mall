@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -15,11 +16,16 @@ import com.taotao.pojo.TbContentExample.Criteria;
 import com.taotao.result.EUDataGridResult;
 import com.taotao.result.TaotaoResult;
 import com.taotao.service.ContentService;
+import com.taotao.utils.HttpClientUtil;
 @Service
 public class ContentServiceImpl implements ContentService {
 	
 	@Autowired
 	private TbContentMapper tbContentMapper;
+	@Value("${REST_BASE_URL}")
+	private String REST_BASE_URL;
+	@Value("${REST_CONTENT_SYNC_URL}")
+	private String REST_CONTENT_SYNC_URL;
 	
 	@Override
 	public EUDataGridResult getContentList(Long categoryId, int page, int rows) {
@@ -45,6 +51,15 @@ public class ContentServiceImpl implements ContentService {
 			content.setCreated(date);
 			content.setUpdated(date);
 			tbContentMapper.insert(content);
+			
+			try {
+				HttpClientUtil.doGet(REST_BASE_URL + REST_CONTENT_SYNC_URL + content.getCategoryId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			return TaotaoResult.ok();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
