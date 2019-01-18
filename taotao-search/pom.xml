@@ -7,9 +7,8 @@
 		<artifactId>taotao-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>taotao-rest</artifactId>
+	<artifactId>taotao-search</artifactId>
 	<packaging>war</packaging>
-	<!-- 依赖 -->
 	<dependencies>
 		<dependency>
 			<groupId>com.taotao</groupId>
@@ -47,10 +46,10 @@
 			<artifactId>jsp-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- jedis -->
+		<!-- solr客户端 -->
 		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
 		</dependency>
 		<!-- 单元测试 -->
 		<dependency>
@@ -71,7 +70,7 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<configuration>
-					<port>8081</port>
+					<port>8083</port>
 					<path>/</path>
 				</configuration>
 			</plugin>
