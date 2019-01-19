@@ -2,6 +2,7 @@ package com.taotao.search.test;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -10,6 +11,12 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Test;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.taotao.result.TaotaoResult;
+import com.taotao.search.pojo.SearchResult;
 
 public class SolrjTest {
 	@Test
@@ -22,7 +29,7 @@ public class SolrjTest {
 		server.add(document);
 		server.commit();
 	}
-	
+
 	@Test
 	public void query() throws SolrServerException, IOException {
 		HttpSolrServer server = new HttpSolrServer("http://192.168.194.133:8080/solr");
@@ -34,12 +41,13 @@ public class SolrjTest {
 			System.out.println(solrDocument.get("item_title"));
 		}
 	}
-	
-	
+
 	public void delete() throws SolrServerException, IOException {
 		HttpSolrServer server = new HttpSolrServer("http://192.168.194.133:8080/solr");
-		//server.deleteById("test002");
+		// server.deleteById("test002");
 		server.deleteByQuery("* : *");
 		server.commit();
 	}
+
+
 }
