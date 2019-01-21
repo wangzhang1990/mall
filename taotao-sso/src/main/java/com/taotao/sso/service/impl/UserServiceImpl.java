@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +20,7 @@ import com.taotao.pojo.TbUserExample.Criteria;
 import com.taotao.result.TaotaoResult;
 import com.taotao.sso.dao.JedisClient;
 import com.taotao.sso.service.UserService;
+import com.taotao.utils.CookieUtils;
 import com.taotao.utils.JsonUtils;
 
 @Service
@@ -72,7 +76,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TaotaoResult loginUser(TbUser user) {
+	public TaotaoResult loginUser(TbUser user, HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		TbUserExample example = new TbUserExample();
 		Criteria criteria = example.createCriteria();
@@ -98,6 +102,9 @@ public class UserServiceImpl implements UserService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				//把token添加到cookie中
+				CookieUtils.setCookie(request, response, "TT_TOKEN", token);
 				
 				return TaotaoResult.ok(token);
 			}
