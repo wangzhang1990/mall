@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.taotao.pojo.TbItem;
 import com.taotao.portal.pojo.CartItem;
+import com.taotao.portal.pojo.Order;
 import com.taotao.result.TaotaoResult;
 
 public interface CartService {
@@ -16,4 +17,5 @@ public interface CartService {
 	List<CartItem> getCartItemList(HttpServletRequest request);
 
 	List<CartItem> deleteCartItem(Long itemId, HttpServletRequest request, HttpServletResponse response);
+
 }
